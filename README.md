@@ -1,6 +1,4 @@
-# Base64 Asset Encoder and GUI Manager
-
-## 簡介 | Introduction
+# 簡介 | Introduction
 
 此項目提供了一個基於 `Python` 的應用程序，包含以下功能：
 
@@ -20,9 +18,9 @@ The project includes two main files:
 
 ---
 
-## 功能特色 | Features
+# 功能特色 | Features
 
-### 1. Base64 資源編碼器 (yieldb64.py) | Base64 Asset Encoder (yieldb64.py)
+## 1. Base64 資源編碼器 (yieldb64.py) | Base64 Asset Encoder (yieldb64.py)
 
 - 自動檢測 `./Asset` 資料夾中的圖片與音訊檔案。
   Automatically detects image and audio files in the `./Asset` directory.
@@ -35,7 +33,7 @@ The project includes two main files:
   - `imageb64.py` (圖片字典 | Image dictionary)
   - `soundb64.py` (音訊字典 | Audio dictionary)
 
-### 2. 圖形用戶界面管理器 | Graphical User Interface Manager
+## 2. 圖形用戶界面管理器 | Graphical User Interface Manager
 
 - **視窗管理 | Window Management**:
   - 設置視窗大小與標題。
@@ -67,7 +65,7 @@ The project includes two main files:
 
 ---
 
-## 環境需求 | Requirements
+# 環境需求 | Requirements
 
 - Python 3.8+
 - 必須庫 | Required Libraries:
@@ -75,7 +73,7 @@ The project includes two main files:
   - `Pillow` (用於圖像處理 | For image processing)
   - `pygame` (用於音訊播放 | For audio playback)
 
-### 安裝 | Installation
+## 安裝 | Installation
 
 1. 複製此儲存庫：
    Clone this repository:
@@ -91,9 +89,9 @@ The project includes two main files:
 
 ---
 
-## 使用範例 | Usage Examples
+# 使用範例 | Usage Examples
 
-### 1. Base64 資源編碼器 (yieldb64.py) | Base64 Asset Encoder (yieldb64.py)
+## 1. Base64 資源編碼器 (yieldb64.py) | Base64 Asset Encoder (yieldb64.py)
 
 將圖片與音訊轉換為 Base64 格式：
 Convert images and audio into Base64 format:
@@ -114,7 +112,7 @@ Convert images and audio into Base64 format:
    - 音訊的 Base64 字典：`./src/soundb64.py`
      Audio Base64 dictionary: `./src/soundb64.py`
 
-### 2. 圖形用戶界面管理器 | Graphical User Interface Manager
+## 2. 圖形用戶界面管理器 | Graphical User Interface Manager
 
 設置簡單 GUI 應用：
 Set up a simple GUI application:
