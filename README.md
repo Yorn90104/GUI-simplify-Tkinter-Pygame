@@ -40,8 +40,7 @@
 ### 安裝
 1. 克隆此倉庫：
    ```bash
-   git clone https://github.com/your-repository-url
-   cd your-repository
+   git clone https://github.com/Yorn90104/GUI-simplify-Tkinter-Pygame-.git
    ```
 2. 安裝依賴項：
    ```bash
