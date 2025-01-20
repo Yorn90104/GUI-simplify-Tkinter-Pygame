@@ -1,6 +1,5 @@
 import os
 import base64
-import os
 
 #產生 base64 音訊與圖像
 asset_dir_items = os.listdir(".\\Asset")
