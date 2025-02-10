@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
 import base64
 from io import BytesIO
@@ -7,12 +8,15 @@ import wave
 import tempfile
 from pygame import mixer
 
-class _SubWindow(tk.Toplevel):
+class SubWindow(tk.Toplevel):
+    """子視窗"""
     def __init__(self, master :tk.Tk = None, window_name: str = None, width: int = 300, height: int = 300, BG_pic: ImageTk.PhotoImage = None):
         """子視窗類別 (父視窗, 子視窗名稱, 寬, 高)"""
         super().__init__(master)
         self.master = master
         self.title(self.master.title())
+        self.iconbitmap(self.master.iconbitmap())
+        
         if window_name is not None:
             self.title(window_name)
 
@@ -78,6 +82,10 @@ class _SubWindow(tk.Toplevel):
         self.add_text(txt, x, y, size, color, "msg", align)
         self.master.after(ms, lambda:self.delete_canvas_tag("msg"))
 
+    def message_box(self, message: str = ""):
+        """顯示訊息框"""
+        messagebox.showinfo(self.title(), message)
+
     def image_button(self, button_name: str, CMD, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
         """添加圖片按鈕(按鈕名, 執行動作, 圖片, 水平座標, 垂直座標, 三圍邊框效果, 焦點邊框厚度)"""
         button = tk.Button(
@@ -126,6 +134,11 @@ class _SubWindow(tk.Toplevel):
         """重新載入輸入盒內容"""
         self.Entry(entry_name).delete(0, "end")
         self.Entry(entry_name).insert(0, content)
+    
+    @staticmethod
+    def open_file() -> str:
+        """開啟檔案(回傳檔案路徑)"""
+        return filedialog.askopenfilename()
 
 
 class Window(tk.Tk):
@@ -197,8 +210,8 @@ class Window(tk.Tk):
         else:
             raise KeyError(f"無法從 {type(self).__name__}._entry_dict 找到名為 {entry_name} 的entry")
     
-    def SubWindow(self, window_name: str = None) -> _SubWindow:
-        """使用 _SubWindow (Tkinter.Toplevel) 相關操作"""
+    def SubWindow(self, window_name: str = None) -> SubWindow:
+        """使用 SubWindow (Tkinter.Toplevel) 相關操作"""
         if window_name in self._subwindow_dict:
             return self._subwindow_dict[window_name]
         else:
@@ -262,6 +275,10 @@ class Window(tk.Tk):
         """顯示短暫訊息文字(ms毫秒: 預設 1000)"""
         self.add_text(canvas_name, txt, x, y, size, color, "msg", align)
         self.after(ms, lambda:self.delete_canvas_tag(canvas_name, "msg"))
+    
+    def message_box(self, message: str = ""):
+        """顯示訊息框"""
+        messagebox.showinfo(self.title(), message)
         
     def image_button(self, button_name: str, CMD, canvas_name: str = None, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
         """添加圖片按鈕(按鈕名, 執行動作, 畫面名, 圖片, 水平座標, 垂直座標, 三圍邊框效果, 焦點邊框厚度)"""
@@ -287,7 +304,7 @@ class Window(tk.Tk):
                                 )
         # 按钮的位置&像素大小
         button.place(width=w, height=h)
-        self.Canva(canvas_name).create_window(x , y , window = button)
+        self.Canva(canvas_name).create_window(x , y , window = button, tags= button_name)
         self._button_dict[button_name] = button
 
     def delete_button(self, button_name: str):
@@ -314,8 +331,13 @@ class Window(tk.Tk):
 
     def setup_subwindow(self, window_name: str = None,  width: int = 300, height: int= 300, BG_pic: ImageTk.PhotoImage = None):
         """建立子視窗(視窗, 寬, 高)"""
-        sw = _SubWindow(self, window_name, width, height, BG_pic)
+        sw = SubWindow(self, window_name, width, height, BG_pic)
         self._subwindow_dict[window_name] = sw
+    
+    @staticmethod
+    def open_file() -> str:
+        """開啟檔案(回傳檔案路徑)"""
+        return filedialog.askopenfilename()
 
 class Picture:
     @staticmethod
