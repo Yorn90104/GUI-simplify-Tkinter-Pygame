@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
@@ -7,6 +8,15 @@ import os
 import wave
 import tempfile
 from pygame import mixer
+
+# 設置基本日誌配置
+logging.basicConfig(
+    level=logging.DEBUG,  # 設置最低日誌級別（DEBUG, INFO, WARNING, ERROR, CRITICAL）
+    format='%(asctime)s - %(levelname)s - %(message)s',  # 設置日誌格式
+    handlers=[
+        logging.StreamHandler()  # 只输出到控制台
+    ]
+)
 
 class SubWindow(tk.Toplevel):
     """子視窗"""
@@ -165,21 +175,21 @@ class Window(tk.Tk):
 
     def clean_temp(self):
         """關閉視窗時刪除臨時 圖標 & 音訊文件"""
-        print("正在關閉視窗")
+        logging.debug("正在關閉視窗")
         self.destroy()
         mixer.music.stop()
         mixer.quit() 
         if os.path.exists("temp_icon.ico"):
             os.remove("temp_icon.ico")
-            print(f"已成功刪除臨時文件: temp_icon.ico")
+            logging.debug(f"已成功刪除臨時文件: temp_icon.ico")
         
         for temp_file in self.temp_files:
             if os.path.exists(temp_file):
                 try:
                     os.remove(temp_file)
-                    print(f"已成功刪除臨時文件: {temp_file}")
+                    logging.debug(f"已成功刪除臨時文件: {temp_file}")
                 except Exception as e:
-                    print(f"無法刪除臨時文件: {temp_file}, 原因: {e}")
+                    logging.error(f"無法刪除臨時文件: {temp_file}, 原因: {e}")
 
     def Canva(self, canvas_name: str= None) -> tk.Canvas:
         "使用 Tkinter.Canvas 相關操作"
@@ -427,8 +437,8 @@ class Audio:
                             self.temp_files.append(temp_filename)
                     
                 # 儲存臨時文件名
-                print(f"成功創建臨時文件: {temp_filename}")
+                logging.debug(f"成功創建臨時文件: {temp_filename}")
                 self.music_dict[name] = temp_filename
             except Exception as e:
-               print(f"音樂解碼失敗 ({name}): {e}")
+               logging.error(f"音樂解碼失敗 ({name}): {e}")
     #endregion
