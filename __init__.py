@@ -67,6 +67,9 @@ class BaseWindow():
         else:
             raise KeyError(f"無法從 {type(self).__name__}._subwindow_dict 找到名為 {window_name} 的subwindow")
         
+    def keyboard_bind(self, func):
+        pass
+        
     def setup_subwindow(self, window_name: str = None,  width: int = 300, height: int= 300, BG_pic: ImageTk.PhotoImage = None):
         """建立子視窗(視窗, 寬, 高)"""
         sw = SubWindow(self, window_name, width, height, BG_pic)
@@ -125,24 +128,24 @@ class BaseWindow():
         """顯示訊息框"""
         messagebox.showinfo(self.window_title, message)
         
-    def image_button(self, button_name: str, CMD, canvas_name: str = None, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
-        """添加圖片按鈕(按鈕名, 執行動作, 畫面名, 圖片, 水平座標, 垂直座標, 三圍邊框效果, 焦點邊框厚度)"""
+    def image_button(self, button_name: str, func, canvas_name: str = None, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
+        """添加圖片按鈕(按鈕名, 執行動作(函式), 畫面名, 圖片, 水平座標, 垂直座標, 三圍邊框效果, 焦點邊框厚度)"""
         button = tk.Button(
             self,
             image = img,
-            command = CMD,
+            command = func,
             relief =  rel,
             highlightthickness = highlight
         )
         self.Canva(canvas_name).create_window(x , y , window = button, tags= button_name)
         self.__button_dict[button_name] = button
 
-    def txt_button(self, button_name: str, CMD  ,canvas_name: str = None,  txt: str = None, w: int= 0, h: int= 0, x: int = 0, y: int = 0, size: int = 12, font_color: str = "black", bg_color: str = "white"):
-        """添加粗體文字按鈕(按鈕名, 執行動作, 畫面名, 文字, 按鈕寬度, 按鈕高度, 水平位置, 垂直位置, 文字大小, 文字顏色, 背景顏色)"""
+    def txt_button(self, button_name: str, func  ,canvas_name: str = None,  txt: str = None, w: int= 0, h: int= 0, x: int = 0, y: int = 0, size: int = 12, font_color: str = "black", bg_color: str = "white"):
+        """添加粗體文字按鈕(按鈕名, 執行動作(函式), 畫面名, 文字, 按鈕寬度, 按鈕高度, 水平位置, 垂直位置, 文字大小, 文字顏色, 背景顏色)"""
         button = tk.Button(
             self,
             text = txt ,
-            command = CMD,
+            command = func,
             font = ("Arial", size, "bold"),
             fg = font_color,
             bg = bg_color
@@ -264,11 +267,11 @@ class SubWindow(tk.Toplevel, BaseWindow):
         self.add_text(txt, x, y, size, color, "msg", align)
         self.master.after(ms, lambda:self.delete_canvas_tag("msg"))
 
-    def image_button(self, button_name: str, CMD, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
-        super().image_button(button_name, CMD, "Main", img, x, y, rel, highlight)
+    def image_button(self, button_name: str, func, img: ImageTk.PhotoImage = None, x: int = 0, y: int = 0, rel: str = "raised", highlight: int = 1):
+        super().image_button(button_name, func, "Main", img, x, y, rel, highlight)
     
-    def txt_button(self, button_name: str, CMD, txt: str = None, w: int= 0, h: int= 0, x: int = 0, y: int = 0, size: int = 12, font_color: str = "black", bg_color: str = "white"):
-        super().txt_button(button_name, CMD, "Main", txt, w, h, x, y, size, font_color, bg_color)
+    def txt_button(self, button_name: str, func, txt: str = None, w: int= 0, h: int= 0, x: int = 0, y: int = 0, size: int = 12, font_color: str = "black", bg_color: str = "white"):
+        super().txt_button(button_name, func, "Main", txt, w, h, x, y, size, font_color, bg_color)
 
     def input_box(self, entry_name: str= None, txt: str = "", x: int = 0, y: int = 0, size: int = 16, width: int = 12):
         super().input_box("Main", entry_name, txt, x, y, size, width)
