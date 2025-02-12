@@ -21,6 +21,65 @@ logging.basicConfig(
 
 class BaseWindow():
     """基本視窗類"""
+    KEYSDICT = {
+        # 滑鼠按鍵
+        "CLICK_LEFT": "<Button-1>",  # 左鍵
+        "CLICK_RIGHT": "<Button-3>",  # 右鍵
+        "SCROLL": "<Button-2>",  # 滾輪
+        "SCROLL_UP": "<Button-4>",  # 滾輪上滾
+        "SCROLL_DOWN": "<Button-5>",  # 滾輪下滾
+
+        # 鍵盤按鍵
+        **{str(i): str(i) for i in range(10)},  # 0~9
+        **{chr(i): chr(i) for i in range(65, 91)},  # A~Z
+        **{chr(i): chr(i) for i in range(97, 123)},  # a~z
+        "ENTER": "<Return>", "ESC": "<Escape>", "SPACE": "<space>", "TAB": "<Tab>", 
+        "BACKSPACE": "<BackSpace>", "DELETE": "<Delete>", "INSERT": "<Insert>", 
+        "UP": "<Up>", "DOWN": "<Down>", "LEFT": "<Left>", "RIGHT": "<Right>", 
+        "PAGE_UP": "<Prior>", "PAGE_DOWN": "<Next>", "HOME": "<Home>", "END": "<End>", 
+        **{f"F{i}": f"<F{i}>" for i in range(0, 13)},  # F1~F12
+        "LEFT_CTRL": "<Control_L>", "RIGHT_CTRL": "<Control_R>", 
+        "LEFT_ALT": "<Alt_L>", "RIGHT_ALT": "<Alt_R>",  # Alt 鍵
+        "LEFT_SHIFT": "<Shift_L>", "RIGHT_SHIFT": "<Shift_R>", # Shift 鍵
+        "CAPS_LOCK": "<Caps_Lock>","CAPSLOCK": "CAPSLOCK", "NUM_LOCK": "<Num_Lock>", "SCROLL_LOCK": "<Scroll_Lock>", 
+        "LEFT_WIN": "<Super_L>", "RIGHT_WIN": "<Super_R>",  # Windows 鍵
+        "LEFT_COMMAND": "<Super_L>", "RIGHT_COMMAND": "<Super_R>",  # MacOS Command 鍵
+        "LEFT_OPTION": "<Alt_L>", "RIGHT_OPTION": "<Alt_R>",  # MacOS Option 鍵
+        "LEFT_META": "<Meta_L>", "RIGHT_META": "<Meta_R>",  # Meta 鍵（某些鍵盤的特殊鍵）
+        "MENU": "<Menu>", "CONTEXT_MENU": "<Menu>",  # Menu 鍵
+        "PRINT_SCREEN": "<Print>", "PAUSE": "<Pause>", "BREAK": "<Break>",  # PrintScreen, Pause/Break 鍵
+        "SYSREQ": "<Sys_Req>",  # 系統請求鍵
+        "HELP": "<Help>",  # 幫助鍵
+
+        
+        # 數字鍵盤
+        **{f"NUM_{i}": f"<KP_{i}>" for i in range(0, 10)},  # 0~9
+        "NUM_ADD": "<KP_Add>", "NUM_SUB": "<KP_Subtract>", 
+        "NUM_MUL": "<KP_Multiply>", "NUM_DIV": "<KP_Divide>",  # 數字鍵盤上的運算符
+        "NUM_ENTER": "<KP_Enter>", "NUM_POINT": "<KP_Decimal>",  # 數字鍵盤上的Enter和小數點
+
+        # 組合鍵
+        "CTRL+SHIFT+ALT+DEL": "<Control-Shift-Alt-Delete>",  # Ctrl + Shift + Alt + Delete
+        **{f"SHIFT+{chr(i)}".upper(): f"<Shift-{chr(i)}>" for i in range(97, 123)},  # Shift + a~z
+        **{f"SHIFT+{i}".upper(): f"<Shift-{i}>" for i in range(10)},  # Shift + 0~9
+        **{f"CTRL+{chr(i)}".upper(): f"<Control-{chr(i)}>" for i in range(97, 123)},  # Ctrl + a~z
+        **{f"CTRL+{i}".upper(): f"<Control-{i}>" for i in range(10)},  # Ctrl + 0~9
+        **{f"ALT+{chr(i)}".upper(): f"<Alt-{chr(i)}>" for i in range(97, 123)},  # Alt + a~z
+        **{f"ALT+{i}".upper(): f"<Alt-{i}>" for i in range(10)},  # Alt + 0~9
+        "CTRL+SHIFT": "<Control-Shift>",  # Ctrl + Shift
+        **{f"CTRL+SHIFT+{chr(i)}".upper(): f"<Control-Shift-{chr(i)}>" for i in range(97, 123)},  # Ctrl + Shift + a~z
+        **{f"CTRL+SHIFT+{i}".upper(): f"<Control-Shift-{i}>" for i in range(10)},  # Ctrl + Shift + 0~9
+        "CTRL+ALT": "<Control-Alt>",  # Ctrl + Alt
+        **{f"CTRL+ALT+{chr(i)}".upper(): f"<Control-Alt-{chr(i)}>" for i in range(97, 123)},  # Ctrl + Alt + a~z
+        **{f"CTRL+ALT+{i}".upper(): f"<Control-Alt-{i}>" for i in range(10)},  # Ctrl + Alt + 0~9
+        "SHIFT+ALT": "<Shift-Alt>",  # Shift + Alt
+        **{f"SHIFT+ALT+{chr(i)}".upper(): f"<Shift-Alt-{chr(i)}>" for i in range(97, 123)},  # Shift + Alt + a~z
+        **{f"SHIFT+ALT+{i}".upper(): f"<Shift-Alt-{i}>" for i in range(10)},  # Shift + Alt + 0~9
+        "CTRL+SHIFT+ALT": "<Control-Shift-Alt>",  # Ctrl + Shift + Alt
+        **{f"CTRL+SHIFT+ALT+{chr(i)}".upper(): f"<Control-Shift-Alt-{chr(i)}>" for i in range(97, 123)},  # Ctrl + Shift + Alt + a~z
+        **{f"CTRL+SHIFT+ALT+{i}".upper(): f"<Control-Shift-Alt-{i}>" for i in range(10)},  # Ctrl + Shift + Alt + 0~9
+        
+    }
     def __init__(self, title: str = None, width: int = 300, height: int = 300):
         self.window_title = title
         self.width = width
@@ -67,8 +126,27 @@ class BaseWindow():
         else:
             raise KeyError(f"無法從 {type(self).__name__}._subwindow_dict 找到名為 {window_name} 的subwindow")
         
-    def keyboard_bind(self, func):
-        pass
+    def keyboard_bind(self, key: str, func):
+        """綁定鍵盤快捷鍵"""
+        if isinstance(self, (tk.Tk, tk.Toplevel)):  # 確保 self 是 Tk 或 Toplevel
+            if key in self.KEYSDICT:
+                self.bind(self.KEYSDICT[key], lambda event: func())
+                logging.debug(f"已綁定鍵盤按鍵鍵: {key}")
+            else:
+                raise KeyError(f"無法從 {type(self).__name__}.KEYSDICT 找到名為 {key} 的鍵盤按鍵")
+        else:
+            raise TypeError(f"{self.keyboard_bind.__name__} 只能綁定在 Tk 或 Toplevel 的視窗上，而不是 {type(self)}")
+        
+    def keyboard_unbind(self, key: str):
+        """解除綁定鍵盤快捷鍵"""
+        if isinstance(self, (tk.Tk, tk.Toplevel)):  # 確保 self 是 Tk 或 Toplevel
+            if key in self.KEYSDICT:
+                self.unbind(self.KEYSDICT[key])
+                logging.debug(f"已解除綁定鍵盤按鍵鍵: {key}")
+            else:
+                raise KeyError(f"無法從 {type(self).__name__}.KEYSDICT 找到名為 {key} 的鍵盤按鍵")
+        else:
+            raise TypeError(f"{self.keyboard_bind.__name__} 只能綁定在 Tk 或 Toplevel 的視窗上，而不是 {type(self)}")
         
     def setup_subwindow(self, window_name: str = None,  width: int = 300, height: int= 300, BG_pic: ImageTk.PhotoImage = None):
         """建立子視窗(視窗, 寬, 高)"""
