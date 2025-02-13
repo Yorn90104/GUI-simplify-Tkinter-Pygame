@@ -392,12 +392,11 @@ class Audio:
         mixer.music.stop()
         self.bgm_playing = False
 
-    def switch_music(self, music_name: str = None, game_running = True) :
+    def switch_music(self, music_name: str = None) :
         """切換音樂"""
         if self.bgm_playing:
             self.stop_music()
-            if game_running:
-                self.play_music(music_name)
+            self.play_music(music_name)
 
     def play_sound(self, sound_name: str= None, volume: float = 1):
         """播放音效(Sound音訊, 音量)"""
